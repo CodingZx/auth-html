@@ -21,7 +21,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 //  import image
 //  直接使用 <img :src="Logo" />
 // import ViteImages from 'vite-plugin-vue-images'
-import setting from './src/settings'
+// import setting from './src/settings'
 
 export default ({ command, mode }) => {
   /*
@@ -36,7 +36,7 @@ export default ({ command, mode }) => {
      * "/vue3-admin-plus/" --> config to base is you need
      * http://8.135.1.141 --> if you config "/" , you can visit attached  to http://8.135.1.141
      * */
-    base: setting.viteBasePath,
+    base: "/",
     //define global var
     define: {
       //fix "path" module issue
@@ -114,7 +114,7 @@ export default ({ command, mode }) => {
         inject: {
           // Inject data into ejs template
           data: {
-            title: setting.title
+            title: 'Vue Admin'
           }
         }
       })

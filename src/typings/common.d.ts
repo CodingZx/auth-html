@@ -34,9 +34,7 @@ interface AxiosConfigTy {
 }
 
 interface SettingTy {
-  title: string
   tagsViewNum: number
   errorLog: string | Array<string>
   delWindowHeight: string
-  viteBasePath: string
 }

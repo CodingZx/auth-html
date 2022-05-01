@@ -1,5 +1,5 @@
 const setting = {
-  title: 'Vue3 Admin',
+
   /**
    * @description TagsView show number
    */
@@ -10,11 +10,6 @@ const setting = {
    * */
   delWindowHeight: '210px',
 
-  /*
-   * vite.config.js base config
-   * such as
-   * */
-  viteBasePath: '/vue3-admin-template/'
 }
 
 export default setting
