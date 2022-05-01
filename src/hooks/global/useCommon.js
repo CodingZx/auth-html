@@ -11,9 +11,7 @@ export const useCommonExample = () => {
     /* 多环境配置及token信息*/
     commonValue: '',
     modalShowTitle: '',
-    VITE_APP_IMAGE_URL_PRE: '', // 图片前缀地址
     VITE_APP_BASE_URL: '', // 请求的url地址
-    VITE_APP_BASE_WS_URL: '', // 请求的url地址
     accessToken: '', // 请求头的token
     userBaseInfo: {}, // 用户信息
     startEndArr: [],
@@ -25,7 +23,6 @@ export const useCommonExample = () => {
     beforeThreeDateTime: ''
   })
   // 读取.env 多坏境里的数据
-  state.VITE_APP_IMAGE_URL_PRE = import.meta.env.VITE_APP_BASE_URL
   state.VITE_APP_BASE_URL = import.meta.env.VITE_APP_BASE_URL
   // 获取token和个人基本信息
   state.accessToken = getToken()

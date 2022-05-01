@@ -3,16 +3,16 @@
   <div class="login-container columnCC">
     <el-form ref="refloginForm" class="login-form" :model="formInline" :rules="formRules">
       <div class="title-container">
-        <h3 class="title text-center">{{ settings.title }}</h3>
+        <h3 class="title text-center">Vue3 Admin</h3>
       </div>
-      <el-form-item prop="username" :rules="formRules.isNotNull">
+      <el-form-item prop="userName" :rules="formRules.isNotNull">
         <div class="rowSC">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.username" placeholder="用户名(admin)" />
+          <el-input v-model="formInline.userName" placeholder="用户名" />
           <!--占位-->
-          <div class="show-pwd" />
+          <!-- <div class="show-pwd" /> -->
         </div>
       </el-form-item>
       <!--<el-form-item prop="password" :rules="formRules.passwordValid">-->
@@ -27,7 +27,7 @@
             v-model="formInline.password"
             :type="passwordType"
             name="password"
-            placeholder="password(123456)"
+            placeholder="password"
             @keyup.enter="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -37,7 +37,7 @@
       </el-form-item>
       <div class="tip-message">{{ tipMessage }}</div>
       <el-button :loading="loading" type="primary" class="login-btn" size="default" @click.prevent="handleLogin">
-        Login
+        登录
       </el-button>
     </el-form>
   </div>
@@ -52,8 +52,8 @@ import { useUserStore } from '@/store/user'
 const formRules = useElement().formRules
 //form
 let formInline = reactive({
-  username: 'admin',
-  password: '123456'
+  userName: 'admin',
+  password: 'admin'
 })
 let state = reactive({
   otherQuery: {},

@@ -4,8 +4,6 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import viteSvgIcons from 'vite-plugin-svg-icons'
 
-//mock
-import { viteMockServe } from 'vite-plugin-mock'
 
 //inject title
 import { createHtmlPlugin } from 'vite-plugin-html'
@@ -24,9 +22,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 //  直接使用 <img :src="Logo" />
 // import ViteImages from 'vite-plugin-vue-images'
 import setting from './src/settings'
-// import { loadEnv } from 'vite'
-const prodMock = setting.openProdMock
-// import packageJson from './package.json'
 
 export default ({ command, mode }) => {
   /*
@@ -88,18 +83,7 @@ export default ({ command, mode }) => {
         // appoint svg icon using mode
         symbolId: 'icon-[dir]-[name]'
       }),
-      //https://github.com/anncwb/vite-plugin-mock/blob/HEAD/README.zh_CN.md
-      viteMockServe({
-        supportTs: true,
-        mockPath: 'mock',
-        localEnabled: command === 'serve',
-        prodEnabled: prodMock,
-        injectCode: `
-          import { setupProdMockServer } from './mockProdServer';
-          setupProdMockServer();
-        `,
-        logger: true
-      }),
+      
       VueSetupExtend(),
       //https://github.com/antfu/unplugin-auto-import/blob/HEAD/src/types.ts
       AutoImport({

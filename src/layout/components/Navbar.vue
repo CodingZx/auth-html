@@ -2,7 +2,6 @@
   <div class="navbar rowBC reset-el-dropdown">
     <div class="rowSC">
       <hamburger
-        v-if="settings.showHamburger"
         :is-active="opened"
         class="hamburger-container"
         @toggleClick="toggleSideBar"
@@ -10,8 +9,8 @@
       <breadcrumb class="breadcrumb-container" />
     </div>
     <!--nav title-->
-    <div v-if="settings.showNavbarTitle" class="heardCenterTitle">{{ settings.title }}</div>
-    <div v-if="settings.ShowDropDown" class="right-menu">
+    <div class="heardCenterTitle">{{ settings.title }}</div>
+    <div class="right-menu">
       <el-dropdown trigger="click" size="medium">
         <div class="avatar-wrapper">
           <img

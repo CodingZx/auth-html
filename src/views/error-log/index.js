@@ -1,2 +1,2 @@
-import component from './ErrorLog.vue'
-export default component
+// import component from './ErrorLog.vue'
+// export default component

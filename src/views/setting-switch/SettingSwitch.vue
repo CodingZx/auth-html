@@ -4,50 +4,10 @@
     <div class="rowSS">
       <div class="mb-1">
         page layout related
-        <div class="mt-2">
-          sidebarLogo：
-          <el-switch v-model="appStore.settings.sidebarLogo" />
-        </div>
-        <div class="mt-3">
-          showNavbarTitle：
-          <el-switch v-model="appStore.settings.showNavbarTitle" />
-        </div>
-        <div class="mt-3">
-          ShowDropDown：
-          <el-switch v-model="appStore.settings.ShowDropDown" />
-        </div>
-        <div class="mt-3">
-          showHamburger：
-          <el-switch v-model="appStore.settings.showHamburger" />
-        </div>
-        <div class="mt-3">
-          showLeftMenu：
-          <el-switch v-model="appStore.settings.showLeftMenu" />
-        </div>
-        <div class="mt-3">
-          showTagsView：
-          <el-switch v-model="appStore.settings.showTagsView" />
-        </div>
-        <div class="mt-3">
-          showTopNavbar：
-          <el-switch v-model="appStore.settings.showTopNavbar" />
-        </div>
-      </div>
-
-      <div class="mb-1 ml-6">
-        page animation related
-        <div class="mt-2">
-          mainNeedAnimation：places to "settings file" for setting
-          <!-- <el-switch v-model="appStore.settings.mainNeedAnimation" />-->
-        </div>
-        <div class="mt-3">
-          isNeedNprogress：
-          <el-switch v-model="appStore.settings.isNeedNprogress" />
-        </div>
+       
       </div>
     </div>
     <div class="mt-2 mb-1">store.commit to change</div>
-    <el-button type="primary" @click="testChangeSettings">testChangeSettings</el-button>
   </div>
 </template>
 
@@ -59,9 +19,6 @@ const settings = computed(() => {
 })
 
 const appStore = useAppStore()
-const testChangeSettings = () => {
-  appStore.M_settings({ sidebarLogo: !settings.value.sidebarLogo })
-}
 
 const source = ref(false)
 const sourceFun = () => {

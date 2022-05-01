@@ -95,29 +95,9 @@ export const usePermissionStore = defineStore('permission', {
         state.isGetUserInfo = data
       })
     },
-    generateRoutes(roles) {
+    generateRoutes(permissions) {
       return new Promise(async (resolve) => {
-        let accessedRoutes
-        if (settings.permissionMode === 'roles') {
-          //filter by role
-          if (roles.includes('admin')) {
-            accessedRoutes = asyncRoutes || []
-          } else {
-            accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-          }
-        } else {
-          //filter by codeArr
-          //req code arr
-          let codeArr = localStorage.getItem('codeArr')
-          if (codeArr) {
-            codeArr = JSON.parse(codeArr)
-          } else {
-            localStorage.setItem('codeArr', JSON.stringify([1]))
-            codeArr = localStorage.getItem('codeArr')
-          }
-          accessedRoutes = await filterRouterByCodeArr(codeArr, asyncRoutes)
-        }
-        // commit('M_routes', accessedRoutes)
+        let accessedRoutes = await filterRouterByCodeArr(permissions, asyncRoutes)
         resolve(accessedRoutes)
       })
     }

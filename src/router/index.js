@@ -54,26 +54,26 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/error-log',
-    component: Layout,
-    redirect: '/error-log/list',
-    meta: { title: 'ErrorLog', icon: 'bug' },
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/views/error-log'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log' }
-      },
-      {
-        path: 'error-log-test',
-        component: () => import('@/views/error-log/ErrorLogTest.vue'),
-        name: 'ErrorLogTest',
-        meta: { title: 'ErrorLog Test' }
-      }
-    ]
-  },
+  // {
+  //   path: '/error-log',
+  //   component: Layout,
+  //   redirect: '/error-log/list',
+  //   meta: { title: 'ErrorLog', icon: 'bug' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/error-log'),
+  //       name: 'ErrorLog',
+  //       meta: { title: 'Error Log' }
+  //     },
+  //     {
+  //       path: 'error-log-test',
+  //       component: () => import('@/views/error-log/ErrorLogTest.vue'),
+  //       name: 'ErrorLogTest',
+  //       meta: { title: 'ErrorLog Test' }
+  //     }
+  //   ]
+  // },
   {
     path: '/writing-demo',
     component: Layout,

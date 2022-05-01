@@ -9,8 +9,4 @@ const appStore = useAppStore()
 const settings = computed(() => {
   return appStore.settings
 })
-onBeforeMount(() => {
-  //set tmp token when setting isNeedLogin false
-  if (!settings.value.isNeedLogin) setToken(settings.value.tmpToken)
-})
 </script>

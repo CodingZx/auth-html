@@ -1,11 +1,11 @@
 <template>
   <div :class="classObj" class="layout-wrapper">
     <!--left side-->
-    <Sidebar v-if="settings.showLeftMenu" class="sidebar-container" />
+    <Sidebar class="sidebar-container" />
     <!--right container-->
     <div class="main-container">
-      <Navbar v-if="settings.showTopNavbar" />
-      <TagsView v-if="settings.showTagsView" />
+      <Navbar />
+      <TagsView />
       <AppMain />
     </div>
   </div>
@@ -32,7 +32,6 @@ const settings = computed(() => {
 const classObj = computed(() => {
   return {
     closeSidebar: !opened.value,
-    hideSidebar: !settings.value.showLeftMenu
   }
 })
 //import ResizeHook to   listen  page size that   open or close

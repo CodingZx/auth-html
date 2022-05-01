@@ -7,7 +7,7 @@ import '@/styles/index.scss' // global css
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-app.use(ElementPlus, { size: 'small', locale: zhCn })
+app.use(ElementPlus, { size: 'default', locale: zhCn })
 
 // global mixin
 // import elementMixin from '@/mixins/elementMixin'
@@ -39,9 +39,6 @@ import './permission'
 import ElSvgIcon from '@/components/ElSvgIcon.vue'
 app.component('ElSvgIcon', ElSvgIcon)
 
-//error log  collection
-import errorLog from '@/hooks/useErrorLog'
-errorLog()
 
 //pinia
 import { createPinia } from 'pinia'

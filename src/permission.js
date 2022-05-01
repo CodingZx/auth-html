@@ -11,10 +11,9 @@ import { usePermissionStore } from '@/store/permission'
 const whiteList = ['/login', '/404', '/401'] // no redirect whitelist
 router.beforeEach(async (to, from, next) => {
   // start progress bar
-  if (settings.isNeedNprogress) NProgress.start()
+  NProgress.start()
   // set page title
   document.title = getPageTitle(to.meta.title)
-  if (!settings.isNeedLogin) setToken(settings.tmpToken)
   const hasToken = getToken()
 
   const userStore = useUserStore()
@@ -30,15 +29,9 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          let accessRoutes = []
-          if (settings.isNeedLogin) {
-            // get user info
-            // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
-            const { roles } = await userStore.getInfo()
-            accessRoutes = await permissionStore.generateRoutes(roles)
-          } else {
-            accessRoutes = asyncRoutes
-          }
+          // get user info
+          const { permissions } = await userStore.getInfo()
+          let accessRoutes = await permissionStore.generateRoutes(permissions)
           // setting constRouters and accessRoutes to vuex , in order to sideBar for using
           permissionStore.M_routes(accessRoutes)
           // dynamically add accessible routes
@@ -54,7 +47,7 @@ router.beforeEach(async (to, from, next) => {
         } catch (err) {
           await userStore.resetState()
           next(`/login?redirect=${to.path}`)
-          if (settings.isNeedNprogress) NProgress.done()
+          NProgress.done()
         }
       }
     }
@@ -63,11 +56,11 @@ router.beforeEach(async (to, from, next) => {
       next()
     } else {
       next(`/login?redirect=${to.path}`)
-      if (settings.isNeedNprogress) NProgress.done()
+      NProgress.done()
     }
   }
 })
 
 router.afterEach(() => {
-  if (settings.isNeedNprogress) NProgress.done()
+  NProgress.done()
 })
