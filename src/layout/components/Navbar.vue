@@ -9,7 +9,6 @@
       <breadcrumb class="breadcrumb-container" />
     </div>
     <!--nav title-->
-    <div class="heardCenterTitle">{{ settings.title }}</div>
     <div class="right-menu">
       <el-dropdown trigger="click" size="medium">
         <div class="avatar-wrapper">
@@ -21,25 +20,35 @@
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <router-link to="/">
-              <el-dropdown-item>Home</el-dropdown-item>
-            </router-link>
-            <a target="_blank" href="https://github.com/jzfai/vue3-admin-ts">
-              <el-dropdown-item>Github</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://juejin.cn/post/7036302298435289095">
-              <el-dropdown-item>Docs</el-dropdown-item>
-            </a>
-            <!--<el-dropdown-item>修改密码</el-dropdown-item>-->
-            <el-dropdown-item divided @click="loginOut">login out</el-dropdown-item>
+            
+            <el-dropdown-item @click="handleToUpdatePwd">修改密码</el-dropdown-item>
+            <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
+
+    <el-dialog v-model="dialogUpdateFormVisible" :close-on-click-modal="false" title="重置密码" width="40%">
+      <el-form :model="update" label-width="80px" class="interfaceForm">
+        <el-form-item label="当前密码:">
+            <el-input v-model="update.oldPassword" autocomplete="off" show-password />
+        </el-form-item>
+        <el-form-item label="新密码:">
+            <el-input v-model="update.newPassword" autocomplete="off" show-password />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogUpdateFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleUpdatePwd">确认</el-button>
+        </span>
+      </template>
+  </el-dialog>
   </div>
 </template>
 
 <script setup>
+import { updatePwdReq } from '@/api/login'
 import { CaretBottom } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import Breadcrumb from './Breadcrumb'
@@ -47,10 +56,6 @@ import Hamburger from './Hamburger'
 
 import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/user'
-
-const settings = computed(() => {
-  return appStore.settings
-})
 const opened = computed(() => {
   return appStore.sidebar.opened
 })
@@ -62,7 +67,6 @@ const toggleSideBar = () => {
  * 退出登录
  * */
 const router = useRouter()
-const route = useRoute()
 const loginOut = () => {
   const userStore = useUserStore()
   userStore.logout().then(() => {
@@ -70,6 +74,35 @@ const loginOut = () => {
     router.push(`/login?redirect=/`)
   })
 }
+
+const state = reactive({
+  dialogUpdateFormVisible: false,
+  update:{},
+})
+const { update, dialogUpdateFormVisible } = toRefs(state)
+
+
+// 修改密码
+const handleToUpdatePwd = () => {
+  state.update = {
+    oldPassword:"",
+    newPassword:""
+  }
+  state.dialogUpdateFormVisible = true
+}
+
+const handleUpdatePwd = () => {
+  updatePwdReq(state.update).then((response) => {
+     ElMessage({
+      message: '修改成功',
+      type: 'success',
+    })
+    state.dialogUpdateFormVisible = false
+  }).catch((e) => {
+    ElMessage.error(e.message)
+  }) 
+}
+
 </script>
 
 <style lang="scss" scoped>

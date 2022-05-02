@@ -17,6 +17,13 @@ export function currentMenuReq() {
 }
 
 
+export function updatePwdReq(data) {
+  return request({
+    url: '/update/pwd',
+    method: 'put',
+    data
+  })
+}
 
 export function logoutReq() {
   return request({
