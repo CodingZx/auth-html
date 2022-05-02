@@ -15,7 +15,7 @@ export function filterAsyncRoutes(asyncRoutes, menus) {
           name: 'dynamicRouter-' + i,
           meta: {
               title: dirResp.title,
-              icon: dirResp.icon
+              elSvgIcon: dirResp.icon
           },
       }
       var children = []
@@ -31,7 +31,7 @@ export function filterAsyncRoutes(asyncRoutes, menus) {
               var child = menuRoute[0]
               child.meta = {
                   title: menuResp.title,
-                  icon: menuResp.icon
+                  elSvgIcon: menuResp.icon
               }
 
               children.push(child)

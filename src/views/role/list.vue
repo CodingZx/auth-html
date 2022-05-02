@@ -2,13 +2,10 @@
   <div class="app-container scroll-y">
      <div class="filter-container" >
         <el-form :inline="true" >
-          <el-form-item label=" 账号：">
-              <el-input v-model.trim="listQuery.userName" />
+          <el-form-item label=" 角色：">
+              <el-input v-model.trim="listQuery.roleName"  />
           </el-form-item>
 
-          <el-form-item label=" 真实姓名：">
-              <el-input v-model.trim="listQuery.realName" />
-          </el-form-item>
           <el-form-item label="">
               <el-button class="filter-item" type="primary" :icon="Search" @click="filterData">
                   查询
@@ -16,12 +13,12 @@
           </el-form-item>
         </el-form>
 
-        <el-form :inline="true" v-permission="['auth:admin:delete', 'auth:admin:add']" >
+        <el-form :inline="true" v-permission="['auth:role:delete', 'auth:role:add']" >
           <el-form-item label="">
-            <el-button v-permission="['auth:admin:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
+            <el-button v-permission="['auth:role:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
                 新增
             </el-button>
-            <el-button v-permission="['auth:admin:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
+            <el-button v-permission="['auth:role:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
                 删除
             </el-button>
           </el-form-item>
@@ -30,19 +27,7 @@
 
     <el-table ref="dataTable" v-loading="listLoading" :data="list" element-loading-text="加载中" border highlight-current-row :height="tableHeight">
       <el-table-column type="selection" width="55" />
-      <el-table-column label="账号" width="200" align="center">
-        <template #default="scope">
-          {{ scope.row.userName }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="姓名" align="center">
-        <template #default="scope">
-          <span>{{ scope.row.realName }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="角色" align="center">
+      <el-table-column label="角色名称"  align="center">
         <template #default="scope">
           {{ scope.row.roleName }}
         </template>
@@ -56,9 +41,6 @@
 
       <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-tooltip content="重置密码" placement="top">
-            <el-button type="info" v-permission="['auth:admin:reset']" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
-          </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button type="info" v-permission="['auth:admin:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
@@ -73,24 +55,24 @@
 
     <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" :title="textMap[dialogStatus]" width="40%">
       <el-form :model="temp" label-width="80px" class="interfaceForm">
-        <el-form-item label="用户名:" >
-          <el-input v-model="temp.userName" autocomplete="off" maxlength="20" show-word-limit />
+        
+        <el-form-item label="角色名称:" >
+          <el-input v-model="temp.roleName" autocomplete="off" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus == 'create'" label="密码:">
-            <el-input v-model="temp.password" autocomplete="off" show-password />
-        </el-form-item>
-        <el-form-item label="真实姓名:" >
-          <el-input v-model="temp.realName" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="角色:" >
-          <el-select v-model="temp.roleId" placeholder="请选择角色" :teleported="false">
-            <el-option
-                v-for="item in roles"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-            </el-option>
-          </el-select>
+        <el-form-item label="权限列表:">
+            <div class="down-tree">
+                <el-tree
+                    :data="menus"
+                    ref="menuTree"
+                    show-checkbox
+                    default-expand-all
+                    highlight-current
+                    check-strictly
+                    :check-on-click-node="true"
+                    node-key="id"
+                    :props="{'children':'children','label':'title'}">
+                </el-tree>
+            </div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -100,31 +82,19 @@
         </span>
       </template>
   </el-dialog>
-  <el-dialog v-model="dialogResetFormVisible" :close-on-click-modal="false" title="重置密码" width="40%">
-      <el-form :model="reset" label-width="80px" class="interfaceForm">
-        <el-form-item label="密码:">
-            <el-input v-model="reset.password" autocomplete="off" show-password />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogResetFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleReset">确认</el-button>
-        </span>
-      </template>
-  </el-dialog>
   </div>
 </template>
 
 <script setup>
 import Pagination from '@/components/Pagination/index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete, Edit, Plus, Search, Key } from '@element-plus/icons-vue'
-import { getAccountList, saveAccount, deleteAccount, resetPwd } from '@/api/account'
-import { getAllRole } from '@/api/role'
+import { Delete, Edit, Plus, Search } from '@element-plus/icons-vue'
+import { getRoleList, saveRole, deleteRole, findRoleMenus } from '@/api/role'
+import { getAllMenu } from '@/api/menu'
 import { nextTick } from 'process'
 
 const dataTable = ref(null)
+const menuTree = ref(null)
 const tableHeight = ref(`calc(100vh - 70px - 40px - 50px - 20px - 100px)`)
 
 const state = reactive({
@@ -134,8 +104,7 @@ const state = reactive({
   listQuery: {
     page: 1,
     size: 20,
-    userName:"",
-    realName:"",
+    roleName:"",
   },
   dialogFormVisible: false,
   dialogStatus: "",
@@ -144,15 +113,13 @@ const state = reactive({
       create: "新增"
   },
   temp: {},
-  dialogResetFormVisible: false,
-  reset: {},
 
 
-  roles: [],
+  menus: [],
 })
 
 //导出属性到页面中使用
-const { list, listLoading, listQuery, count, dialogFormVisible, temp, roles, textMap, dialogStatus, reset, dialogResetFormVisible } = toRefs(state)
+const { list, listLoading, listQuery, count, dialogFormVisible, temp, menus, textMap, dialogStatus } = toRefs(state)
 
 onBeforeMount(() => {
   fetchData()
@@ -166,7 +133,7 @@ const filterData = () => {
 const fetchData = () => {
 
   state.listLoading = true
-  getAccountList(state.listQuery).then((response) => {
+  getRoleList(state.listQuery).then((response) => {
     var data = response.data
     state.list = data.data
     state.count = data.count
@@ -177,37 +144,45 @@ const fetchData = () => {
 }
 
 const handleCreate = () => {
-  state.roles = []
-  getAllRole().then((response) => {
-    state.roles = response.data
+  state.menus = []
+  getAllMenu().then((response) => {
+    state.menus = response.data
     state.temp = {
-      realName:"",
-      password:"",
-      userName:"",
-      roleId: "",
+      roleName:"",
+      menus: []
     }
     state.dialogStatus = 'create'
 
     state.dialogFormVisible = true
+
+    nextTick(() => {
+      menuTree.value.setCheckedKeys([])
+    })
   }).catch((e) => {
     ElMessage.error(e.message)
   }) 
 }
 
 const handleUpdate = (row) => {
-  state.roles = []
-  getAllRole().then((response) => {
-    state.roles = response.data
-    state.temp = {
-      id: row.id,
-      realName: row.realName,
-      password: "",
-      userName: row.userName,
-      roleId: row.roleId,
-    }
-    state.dialogStatus = 'update'
+  state.menus = []
+  getAllMenu().then((response) => {
+    state.menus = response.data
 
-    state.dialogFormVisible = true
+    findRoleMenus(row.id).then((menuResp) => {
+      state.temp = {
+        id: row.id,
+        roleName: row.roleName,
+        menus: []
+      }
+      state.dialogStatus = 'update'
+
+      state.dialogFormVisible = true
+
+      nextTick(() => {
+        menuTree.value.setCheckedKeys(menuResp.data)
+      })
+    })
+    
   }).catch((e) => {
     ElMessage.error(e.message)
   }) 
@@ -226,7 +201,7 @@ const handleDeleteSelected = () => {
       type: 'danger',
     }
   ).then(() => {
-    deleteAccount(selections).then((response) => {
+    deleteRole(selections).then((response) => {
       ElMessage({
         message: '删除成功',
         type: 'success',
@@ -251,7 +226,7 @@ const handleDeleteRow = (id) => {
       type: 'danger',
     }
   ).then(() => {
-    deleteAccount(id).then((response) => {
+    deleteRole(id).then((response) => {
       ElMessage({
         message: '删除成功',
         type: 'success',
@@ -267,10 +242,9 @@ const handleDeleteRow = (id) => {
 }
 
 const handleSave = () => {
-  if(state.temp.roleId == '') {
-    state.temp.roleId = null
-  }
-  saveAccount(state.temp).then((response) => {
+  state.temp.menus = menuTree.value.getCheckedKeys()
+  
+  saveRole(state.temp).then((response) => {
     state.dialogFormVisible = false
     ElMessage({
       message: '保存成功',
@@ -282,28 +256,13 @@ const handleSave = () => {
     ElMessage.error(e.message)
   }) 
 }
-
-const handleToResetPwd = (id) => {
-  state.reset = {
-    adminId: id,
-    password: "",
-  }
-  state.dialogResetFormVisible = true
-}
-
-const handleReset = () => {
-  resetPwd(state.reset).then((response) => {
-    state.dialogResetFormVisible = false
-    ElMessage({
-      message: '重置成功',
-      type: 'success',
-    })
-  }).catch((e) => {
-    ElMessage.error(e.message)
-  }) 
-}
-
-
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.down-tree{
+    height: 400px;
+    display: block;
+    overflow-y: scroll;
+    width: 100%
+}
+</style>

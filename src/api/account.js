@@ -23,3 +23,12 @@ export function deleteAccount(id) {
     method: 'delete'
   })
 }
+
+
+export function resetPwd(data) {
+  return request({
+    url: '/admin/reset/pwd',
+    method: 'put',
+    data: data
+  })
+}
