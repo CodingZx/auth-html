@@ -11,8 +11,6 @@ interface AxiosReqTy extends AxiosRequestConfig {
   method?: string
   data?: ObjTy
   params?: ObjTy
-  bfLoading?: boolean
-  afHLoading?: boolean
   isUploadFile?: boolean
   isDownLoadFile?: boolean
 }
@@ -21,8 +19,6 @@ interface AxiosConfigTy {
   method?: string
   data?: ObjTy
   params?: ObjTy
-  bfLoading?: boolean
-  afHLoading?: boolean
   isUploadFile?: boolean
   isDownLoadFile?: boolean
 }

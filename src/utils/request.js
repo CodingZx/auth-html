@@ -2,37 +2,69 @@ import axios from 'axios'
 import router from '@/router'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { getToken, setToken } from '@/utils/auth'
+import { uuid } from '@/utils/uuid'
+import CryptoJS from 'crypto-js/crypto-js'
 import { useUserStore } from '@/store/user'
-let reqConfig
-let loadingE
 
 const service = axios.create({
   timeout: 15000,
-  baseURL: import.meta.env.VITE_APP_BASE_URL
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
+  headers: {
+    "Content-Type": "application/json;charset=utf-8"
+  },
 })
 
 // 请求拦截
 service.interceptors.request.use(
   (request) => {
     // token setting
-    request.headers['X-Access-Token'] = getToken()
-    /* download file*/
+    var userToken = getToken()
+    if (typeof(userToken) != 'undefined' && userToken != null) {
+      request.headers['X-Access-Token'] = userToken
+    } else {
+        userToken = ""
+    }
+
+    // download file
     if (request.isDownLoadFile) {
       request.responseType = 'blob'
     }
-    /* upload file*/
+
+    //Upload file
     if (request.isUploadFile) {
       request.headers['Content-Type'] = 'multipart/form-data'
     }
-    reqConfig = request
-    if (request.bfLoading) {
-      loadingE = ElLoading.service({
-        lock: true,
-        text: '数据载入中',
-        // spinner: 'el-icon-ElLoading',
-        background: 'rgba(0, 0, 0, 0.1)'
-      })
+
+    var timestamp = new Date().getTime()
+    request.headers['X-Access-Timestamp'] = timestamp
+
+    // 来源
+    var source = 1
+    request.headers['X-Access-Source'] = source
+
+    var params = ""
+    if(request.params) {
+        params = Object.keys(request.params).sort().map((key) => key + "=" + request.params[key]).join("&")
     }
+    var body = ""
+    if (request.data && (request.method == "post" || request.method == "put")) {
+        body = JSON.stringify(request.data);
+        request.data = body;
+    }
+
+    // 随机字符串
+    var nonce = uuid()
+    request.headers['X-Access-Nonce'] = nonce
+
+    // 版本
+    var version = import.meta.env.VITE_APP_SIGN_VERSION
+    request.headers['X-Access-Version'] = version
+
+    // 签名
+    var signStr = request.url + '\n' + request.method.toUpperCase() + '\n' + version + '\n' + (timestamp+','+userToken+','+source+','+nonce) + '\n' + body + '\n' + params
+
+    request.headers['X-Access-Sign'] = CryptoJS.HmacSHA256(signStr, import.meta.env.VITE_APP_SIGN_KEY)
+
     return request
   },
   (err) => {
@@ -42,12 +74,9 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   (res) => {
-    if (reqConfig.afHLoading && loadingE) {
-      loadingE.close()
-    }
     // 如果是下载文件直接返回
-    if (reqConfig.isDownLoadFile) {
-      return res
+    if(res.request.responseType == 'blob') {
+      return res.data // 下载文件
     }
     const { message, code } = res.data
    
@@ -76,7 +105,6 @@ service.interceptors.response.use(
   },
   (err) => {
     /*http错误处理，处理跨域，404，401，500*/
-    if (loadingE) loadingE.close()
     ElMessage({
       message: err,
       type: 'error',
@@ -98,8 +126,6 @@ export function axiosReq({
   data,
   method,
   params,
-  bfLoading,
-  afHLoading,
   isUploadFile,
   isDownLoadFile,
 }) {
@@ -108,8 +134,6 @@ export function axiosReq({
     method: method ?? 'get',
     data: data ?? {},
     params: params ?? {},
-    bfLoading: bfLoading ?? false,
-    afHLoading: afHLoading ?? true,
     isUploadFile: isUploadFile ?? false,
     isDownLoadFile: isDownLoadFile ?? false,
   })
