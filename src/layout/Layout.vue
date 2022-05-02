@@ -26,9 +26,6 @@ const opened = computed(() => {
   return appStore.sidebar.opened
 })
 
-const settings = computed(() => {
-  return appStore.settings
-})
 const classObj = computed(() => {
   return {
     closeSidebar: !opened.value,

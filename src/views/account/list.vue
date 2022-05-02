@@ -3,11 +3,11 @@
      <div class="filter-container" >
         <el-form :inline="true" >
           <el-form-item label=" 账号：">
-              <el-input v-model.trim="listQuery.userName" />
+              <el-input v-model.trim="listQueryCopy.userName" />
           </el-form-item>
 
           <el-form-item label=" 真实姓名：">
-              <el-input v-model.trim="listQuery.realName" />
+              <el-input v-model.trim="listQueryCopy.realName" />
           </el-form-item>
           <el-form-item label="">
               <el-button class="filter-item" type="primary" :icon="Search" @click="filterData">
@@ -137,6 +137,10 @@ const state = reactive({
     userName:"",
     realName:"",
   },
+  listQueryCopy: {
+    userName:"",
+    realName:"",
+  },
   dialogFormVisible: false,
   dialogTitle: "",
   temp: {},
@@ -148,7 +152,7 @@ const state = reactive({
 })
 
 //导出属性到页面中使用
-const { list, listLoading, listQuery, count, dialogFormVisible, temp, roles, dialogTitle, reset, dialogResetFormVisible } = toRefs(state)
+const { list, listLoading, listQuery, listQueryCopy, count, dialogFormVisible, temp, roles, dialogTitle, reset, dialogResetFormVisible } = toRefs(state)
 
 onBeforeMount(() => {
   fetchData()
@@ -156,6 +160,8 @@ onBeforeMount(() => {
 
 const filterData = () => {
   state.listQuery.page = 1
+  state.listQuery.realName = state.listQueryCopy.realName
+  state.listQuery.userName = state.listQueryCopy.userName
   fetchData()
 }
 

@@ -21,7 +21,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 //  import image
 //  直接使用 <img :src="Logo" />
 // import ViteImages from 'vite-plugin-vue-images'
-// import setting from './src/settings'
 
 export default ({ command, mode }) => {
   /*

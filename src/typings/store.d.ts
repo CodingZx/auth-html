@@ -18,7 +18,6 @@ export interface AppTy {
     // withoutAnimation: false
   }
   device: string
-  settings: ObjTy
   cachedViews: Array<string>
   cachedViewsDeep: Array<string>
 }

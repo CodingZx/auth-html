@@ -18,10 +18,6 @@ const levelList = ref(null)
 //Whether close the animation fo breadcrumb
 
 import { useAppStore } from '@/store/app'
-const appStore = useAppStore()
-const settings = computed(() => {
-  return appStore.settings
-})
 
 const route = useRoute()
 const getBreadcrumb = () => {

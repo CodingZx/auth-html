@@ -14,7 +14,6 @@
 </template>
 
 <script setup>
-import setting from '@/settings'
 defineProps({
   collapse: {
     type: Boolean,

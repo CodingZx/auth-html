@@ -44,7 +44,6 @@
 </template>
 
 <script setup>
-import settings from '@/settings'
 
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/store/user'

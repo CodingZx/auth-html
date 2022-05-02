@@ -1,5 +1,4 @@
 import router, { asyncRoutes } from '@/router'
-import settings from './settings'
 import { getToken, setToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -31,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
         try {
           const { menus } = await userStore.getCurrentMenus()
           let accessRoutes = await permissionStore.generateRoutes(menus)
-          // setting constRouters and accessRoutes to vuex , in order to sideBar for using
+          
           permissionStore.M_routes(accessRoutes)
           // dynamically add accessible routes
           //router4 addRoutes destroyed

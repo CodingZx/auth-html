@@ -1,4 +1,3 @@
-import defaultSettings from '@/settings'
 import { defineStore } from 'pinia'
 export const useAppStore = defineStore('app', {
   /***
@@ -9,7 +8,6 @@ export const useAppStore = defineStore('app', {
     return {
       sidebar: { opened: true },
       device: 'desktop',
-      settings: defaultSettings,
       cachedViews: [],
       cachedViewsDeep: []
     }
@@ -19,11 +17,6 @@ export const useAppStore = defineStore('app', {
    *封装处理数据的函数（业务逻辑)：修改数据
    */
   actions: {
-    M_settings(data) {
-      this.$patch((state) => {
-        state.settings = { ...state.settings, ...data }
-      })
-    },
     M_sidebar_opened(data) {
       this.$patch((state) => {
         state.sidebar.opened = data

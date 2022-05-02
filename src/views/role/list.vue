@@ -3,7 +3,7 @@
      <div class="filter-container" >
         <el-form :inline="true" >
           <el-form-item label=" 角色：">
-              <el-input v-model.trim="listQuery.roleName"  />
+              <el-input v-model.trim="listQueryCopy.roleName"  />
           </el-form-item>
 
           <el-form-item label="">
@@ -42,10 +42,10 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-tooltip content="编辑" placement="top">
-            <el-button type="info" v-permission="['auth:admin:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
+            <el-button type="info" v-permission="['auth:role:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['auth:admin:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button type="danger" v-permission="['auth:role:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -106,6 +106,9 @@ const state = reactive({
     size: 20,
     roleName:"",
   },
+  listQueryCopy: {
+    roleName:"",
+  },
   dialogFormVisible: false,
   dialogTitle: "",
  
@@ -116,7 +119,7 @@ const state = reactive({
 })
 
 //导出属性到页面中使用
-const { list, listLoading, listQuery, count, dialogFormVisible, temp, menus, dialogTitle } = toRefs(state)
+const { list, listLoading, listQuery, listQueryCopy, count, dialogFormVisible, temp, menus, dialogTitle } = toRefs(state)
 
 onBeforeMount(() => {
   fetchData()
@@ -124,6 +127,7 @@ onBeforeMount(() => {
 
 const filterData = () => {
   state.listQuery.page = 1
+  state.listQuery.roleName = state.listQueryCopy.roleName
   fetchData()
 }
 

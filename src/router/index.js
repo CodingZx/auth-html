@@ -66,6 +66,12 @@ export const asyncRoutes = [
     component: () => import('@/views/menu/list.vue'),
     meta: { title: '菜单列表'}
   },
+  {
+    path: '/auth/log/list',
+    name: 'authLog',
+    component: () => import('@/views/log/list.vue'),
+    meta: { title: '日志列表'}
+  },
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

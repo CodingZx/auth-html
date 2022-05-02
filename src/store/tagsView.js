@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import setting from '@/settings'
 export const useTagsViewStore = defineStore('tagsView', {
   /***
    *类似于组件的 data数据的 ,用来存储全局状态的
@@ -19,7 +18,7 @@ export const useTagsViewStore = defineStore('tagsView', {
       this.$patch((state) => {
         if (state.visitedViews.some((v) => v.path === view.path)) return
         //limit num
-        if (state.visitedViews.length >= setting.tagsViewNum) {
+        if (state.visitedViews.length >= 6) {
           state.visitedViews.pop()
           state.visitedViews.push(
             Object.assign({}, view, {

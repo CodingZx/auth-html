@@ -27,8 +27,3 @@ interface AxiosConfigTy {
   isDownLoadFile?: boolean
 }
 
-interface SettingTy {
-  tagsViewNum: number
-  errorLog: string | Array<string>
-  delWindowHeight: string
-}

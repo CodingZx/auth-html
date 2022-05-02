@@ -1,4 +1,3 @@
-import defaultSettings from '@/settings'
 
 const title = 'Vue Admin'
 

@@ -14,9 +14,6 @@
 import { useAppStore } from '@/store/app'
 
 const route = useRoute()
-const settings = computed(() => {
-  return appStore.settings
-})
 
 const key = computed(() => route.path)
 
