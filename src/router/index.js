@@ -60,6 +60,12 @@ export const asyncRoutes = [
     component: () => import('@/views/role/list.vue'),
     meta: { title: '角色列表'}
   },
+  {
+    path: '/auth/menu/list',
+    name: 'authMenu',
+    component: () => import('@/views/menu/list.vue'),
+    meta: { title: '菜单列表'}
+  },
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

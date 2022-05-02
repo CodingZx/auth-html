@@ -53,7 +53,7 @@
 
     <Pagination v-model:page='listQuery.page' v-model:limit='listQuery.size' :total='count' @pagination='fetchData' />
 
-    <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" :title="textMap[dialogStatus]" width="40%">
+    <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" :title="dialogTitle" width="40%">
       <el-form :model="temp" label-width="80px" class="interfaceForm">
         
         <el-form-item label="角色名称:" >
@@ -107,11 +107,8 @@ const state = reactive({
     roleName:"",
   },
   dialogFormVisible: false,
-  dialogStatus: "",
-  textMap: {
-      update: "编辑",
-      create: "新增"
-  },
+  dialogTitle: "",
+ 
   temp: {},
 
 
@@ -119,7 +116,7 @@ const state = reactive({
 })
 
 //导出属性到页面中使用
-const { list, listLoading, listQuery, count, dialogFormVisible, temp, menus, textMap, dialogStatus } = toRefs(state)
+const { list, listLoading, listQuery, count, dialogFormVisible, temp, menus, dialogTitle } = toRefs(state)
 
 onBeforeMount(() => {
   fetchData()
@@ -151,7 +148,7 @@ const handleCreate = () => {
       roleName:"",
       menus: []
     }
-    state.dialogStatus = 'create'
+    state.dialogTitle = '新增'
 
     state.dialogFormVisible = true
 
@@ -174,7 +171,7 @@ const handleUpdate = (row) => {
         roleName: row.roleName,
         menus: []
       }
-      state.dialogStatus = 'update'
+      state.dialogTitle = '编辑'
 
       state.dialogFormVisible = true
 
