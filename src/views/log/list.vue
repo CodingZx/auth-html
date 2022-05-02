@@ -2,7 +2,7 @@
   <div class="app-container scroll-y">
      <div class="filter-container" >
         <el-form :inline="true" >
-          <el-form-item label=" 操作：">
+          <el-form-item label=" 操作人：">
               <el-input v-model.trim="listQueryCopy.operName"  />
           </el-form-item>
           <el-form-item label=" 时间：">
