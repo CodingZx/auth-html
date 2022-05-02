@@ -6,13 +6,16 @@ import { useUserStore } from '@/store/user'
 let reqConfig
 let loadingE
 
-const service = axios.create()
+const service = axios.create({
+  timeout: 15000,
+  baseURL: import.meta.env.VITE_APP_BASE_URL
+})
 
 // 请求拦截
 service.interceptors.request.use(
   (request) => {
     // token setting
-    request.headers['AUTHORIZE_TOKEN'] = getToken()
+    request.headers['X-Access-Token'] = getToken()
     /* download file*/
     if (request.isDownLoadFile) {
       request.responseType = 'blob'
@@ -30,13 +33,6 @@ service.interceptors.request.use(
         background: 'rgba(0, 0, 0, 0.1)'
       })
     }
-    /*
-     *params会拼接到url上
-     * */
-    if (request.isParams) {
-      request.params = request.data
-      request.data = {}
-    }
     return request
   },
   (err) => {
@@ -53,19 +49,14 @@ service.interceptors.response.use(
     if (reqConfig.isDownLoadFile) {
       return res
     }
-    const { flag, msg, isNeedUpdateToken, updateToken, code } = res.data
-    //更新token保持登录状态
-    if (isNeedUpdateToken) {
-      setToken(updateToken)
-    }
-    const successCode = '0,200,20000'
-    if (successCode.includes(code)) {
+    const { message, code } = res.data
+   
+    if (code == 200) {
       return res.data
     } else {
-      if (code === 403) {
+      if (code === 999) {
         ElMessageBox.confirm('请重新登录', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
+          confirmButtonText: '登录失效',
           type: 'warning'
         }).then(() => {
           const userStore = useUserStore()
@@ -74,17 +65,13 @@ service.interceptors.response.use(
           })
         })
       }
-      if (reqConfig.isAlertErrorMsg) {
-        ElMessage({
-          message: msg,
-          type: 'error',
-          duration: 2 * 1000
-        })
-      }
       //返回错误信息
       //如果未catch 走unhandledrejection进行收集
       //注：如果没有return 则，会放回到请求方法中.then ,返回的res为 undefined
-      return Promise.reject(res.data)
+      return Promise.reject({
+        code: res.data.code,
+        message: res.data.message
+      })
     }
   },
   (err) => {
@@ -98,11 +85,11 @@ service.interceptors.response.use(
     //如果是跨域
     //Network Error,cross origin
     const errObj = {
-      msg: err.toString(),
+      message: err.toString(),
       reqUrl: reqConfig.baseURL + reqConfig.url,
-      params: reqConfig.isParams ? reqConfig.params : reqConfig.data
+      params: reqConfig.params ? reqConfig.params : reqConfig.data
     }
-    return Promise.reject(JSON.stringify(errObj))
+    return Promise.reject(errObj)
   }
 )
 
@@ -110,27 +97,21 @@ export function axiosReq({
   url,
   data,
   method,
-  isParams,
+  params,
   bfLoading,
   afHLoading,
   isUploadFile,
   isDownLoadFile,
-  baseURL,
-  timeout,
-  isAlertErrorMsg = true
 }) {
   return service({
     url: url,
     method: method ?? 'get',
     data: data ?? {},
-    isParams: isParams ?? false,
+    params: params ?? {},
     bfLoading: bfLoading ?? false,
     afHLoading: afHLoading ?? true,
     isUploadFile: isUploadFile ?? false,
     isDownLoadFile: isDownLoadFile ?? false,
-    isAlertErrorMsg: isAlertErrorMsg,
-    baseURL: baseURL ?? import.meta.env.VITE_APP_BASE_URL,
-    timeout: timeout ?? 15000
   })
 }
 

@@ -15,7 +15,6 @@ const errorLogReq = (errLog) => {
     },
     method: 'post',
     bfLoading: false,
-    isAlertErrorMsg: true
   }).then(() => {
     bus.emit('reloadErrorPage', {})
   })

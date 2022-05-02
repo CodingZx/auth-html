@@ -1,15 +1,14 @@
-import { useUserStore } from '@/store/user'
+import { getPermissions } from '@/utils/auth'
 function checkPermission(el, binding) {
   const { value } = binding
 
-  const userStore = useUserStore()
-  const roles = userStore.roles
+  const permissions = getPermissions()
 
   if (value && value instanceof Array) {
     if (value.length > 0) {
-      const permissionRoles = value
-      const hasPermission = roles.some((role) => {
-        return permissionRoles.includes(role)
+      const permissionCodes = value
+      const hasPermission = permissions.some((code) => {
+        return permissionCodes.includes(code)
       })
 
       if (!hasPermission) {
@@ -17,7 +16,7 @@ function checkPermission(el, binding) {
       }
     }
   } else {
-    throw new Error(`need roles! Like v-permission="['admin','editor']"`)
+    throw new Error(`need roles! Like v-permission="['permissionCode']"`)
   }
 }
 

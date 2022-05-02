@@ -29,9 +29,8 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          // get user info
-          const { permissions } = await userStore.getInfo()
-          let accessRoutes = await permissionStore.generateRoutes(permissions)
+          const { menus } = await userStore.getCurrentMenus()
+          let accessRoutes = await permissionStore.generateRoutes(menus)
           // setting constRouters and accessRoutes to vuex , in order to sideBar for using
           permissionStore.M_routes(accessRoutes)
           // dynamically add accessible routes

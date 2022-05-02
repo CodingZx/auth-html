@@ -1,70 +1,50 @@
 import { defineStore } from 'pinia'
+import Layout from '@/layout'
 import { asyncRoutes, constantRoutes } from '@/router'
-import settings from '@/settings'
 
-/**
- * Use meta.code to determine if the current user has permission
- * @param codeArr
- * @param routeItem
- */
-function hasCodePermission(codeArr, routeItem) {
-  if (routeItem.meta && routeItem.meta.code) {
-    return codeArr.includes(routeItem.meta.code) || routeItem.hidden
-  } else {
-    return true
-  }
-}
-/**
- * Use meta.code to determine if the current user has permission
- * @param codeArr
- * @param asyncRoutes
- */
-function filterRouterByCodeArr(codeArr, asyncRoutes) {
-  return new Promise((resolve) => {
-    const filterRouter = []
-    asyncRoutes.forEach(async (routeItem) => {
-      if (hasCodePermission(codeArr, routeItem)) {
-        if (routeItem.children) {
-          routeItem.children = await filterRouterByCodeArr(codeArr, routeItem.children)
-        }
-        filterRouter.push(routeItem)
+export function filterAsyncRoutes(asyncRoutes, menus) {
+  const accessedRouters = []
+  if(typeof(menus) == 'undefined' || menus == null || menus.length == 0) return accessedRouters
+
+  for(var i=0; i < menus.length; i++) {
+      var dirResp = menus[i];
+
+      var routerDir = {
+          path: '/dynamic'+i,
+          component: Layout,
+          name: 'dynamicRouter-' + i,
+          meta: {
+              title: dirResp.title,
+              icon: dirResp.icon
+          },
       }
-    })
-    resolve(filterRouter)
-  })
-}
+      var children = []
+      // 子项
+      for(var j=0; j< dirResp.children.length; j++) {
+          var menuResp = dirResp.children[j];
 
-/**
- * Use meta.role to determine if the current user has permission
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some((role) => route.meta?.roles?.includes(role))
-  } else {
-    return true
-  }
-}
+          var menuRoute = asyncRoutes.filter(route => {
+              return route.path == menuResp.path
+          });
+          
+          if(menuRoute && menuRoute.length > 0) {
+              var child = menuRoute[0]
+              child.meta = {
+                  title: menuResp.title,
+                  icon: menuResp.icon
+              }
 
-/**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
- */
-export function filterAsyncRoutes(routes, roles) {
-  const res = []
-  routes.forEach((route) => {
-    const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
+              children.push(child)
+          }
       }
-      res.push(tmp)
-    }
-  })
-
-  return res
+      
+      if(children.length > 0) {
+          routerDir.children = children
+          routerDir.redirect = children[0].path
+          accessedRouters.push(routerDir)
+      }
+  }
+  return accessedRouters
 }
 
 export const usePermissionStore = defineStore('permission', {
@@ -95,9 +75,9 @@ export const usePermissionStore = defineStore('permission', {
         state.isGetUserInfo = data
       })
     },
-    generateRoutes(permissions) {
+    generateRoutes(menus) {
       return new Promise(async (resolve) => {
-        let accessedRoutes = await filterRouterByCodeArr(permissions, asyncRoutes)
+        let accessedRoutes = await filterAsyncRoutes(asyncRoutes, menus)
         resolve(accessedRoutes)
       })
     }

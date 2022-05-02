@@ -1,4 +1,4 @@
-import { loginReq, logoutReq } from '@/api/login'
+import { loginReq, logoutReq, currentMenuReq } from '@/api/login'
 import { setToken, removeToken, setPermissions, removePermissions, getPermissions } from '@/utils/auth'
 import router, { asyncRoutes } from '@/router'
 import { defineStore } from 'pinia'
@@ -34,12 +34,21 @@ export const useUserStore = defineStore('user', {
           })
       })
     },
-    // get user info
-    getInfo() {
+    getCurrentMenus() {
       return new Promise((resolve, reject) => {
-        resolve({
-          permissions: getPermissions()
-        })
+        currentMenuReq()
+          .then((res) => {
+            if (res.code === 200) {
+              resolve({
+                menus: res.data,
+              })
+            } else {
+              reject(null)
+            }
+          })
+          .catch((error) => {
+            reject(error)
+          })
       })
     },
     // user logout

@@ -10,27 +10,21 @@ interface AxiosReqTy extends AxiosRequestConfig {
   url?: string
   method?: string
   data?: ObjTy
-  isParams?: boolean
+  params?: ObjTy
   bfLoading?: boolean
   afHLoading?: boolean
   isUploadFile?: boolean
   isDownLoadFile?: boolean
-  isAlertErrorMsg?: boolean
-  baseURL?: string
-  timeout?: number
 }
 interface AxiosConfigTy {
   url?: string
   method?: string
   data?: ObjTy
-  isParams?: boolean
+  params?: ObjTy
   bfLoading?: boolean
   afHLoading?: boolean
   isUploadFile?: boolean
   isDownLoadFile?: boolean
-  isAlertErrorMsg?: boolean
-  baseURL?: string
-  timeout?: number
 }
 
 interface SettingTy {

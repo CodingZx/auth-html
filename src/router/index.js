@@ -32,6 +32,7 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    hidden: true,
     children: [
       {
         path: 'dashboard',
@@ -41,39 +42,18 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index.vue'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index.vue'),
-        meta: { title: 'Tree', icon: 'tree' }
-      },
-      {
-        path: 'worker-Demo',
-        name: 'WorkerDemo',
-        component: () => import('@/views/example/worker'),
-        meta: { title: 'Worker Demo', icon: 'nested' }
-      }
-    ]
-  }
 ]
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/auth/admin/list',
+    name: 'authAdmin',
+    component: () => import('@/views/account/list.vue'),
+    meta: { title: '账号列表'}
+  },
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }

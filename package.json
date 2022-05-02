@@ -1,7 +1,7 @@
 {
-  "name": "vue3-admin-template",
-  "version": "1.5.1",
-  "author": "kuanghua(869653722@qq.com)",
+  "name": "auth-v2",
+  "version": "0.0.1",
+  "author": "cicco",
   "scripts": {
     "dev": "vite --mode serve-dev --host",
     "test": "vite --mode serve-test --host",
@@ -15,7 +15,7 @@
     "vue": "^3.2.26"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "1.1.4",
+    "@element-plus/icons-vue": "^1.1.4",
     "js-errorlog-collection": "^1.0.5",
     "axios": "0.21.3",
     "echarts": "5.3.2",

@@ -157,7 +157,6 @@ let selectPageReq = () => {
     data,
     isParams: true,
     bfLoading: false,
-    isAlertErrorMsg: false
   }
   axiosReq(reqConfig).then((resData) => {
     usertableData.value = resData.data?.records
