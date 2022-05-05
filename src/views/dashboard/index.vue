@@ -46,6 +46,9 @@
       <el-col :span="24">
           <div id="heapCharts" style="height: 500px; width: 100%" />
       </el-col>
+      <el-col :span="24">
+          <div id="reqCounterCharts" style="height: 500px; width: 100%" />
+      </el-col>
       <el-col :span="12">
           <div id="cpuCharts" style="height: 500px; width: 100%" />
       </el-col>
@@ -76,6 +79,7 @@ const state = reactive({
       cpuCharts: null,
       threadCharts: null,
       heapCharts: null,
+      reqCounterCharts: null,
   },
 
   times:[],
@@ -87,6 +91,7 @@ const state = reactive({
   threadCount:[],
   threadDaemonCount:[],
   heap:[],
+  reqCounter: [],
 })
 let { loading, env, servers, monitorParams } = toRefs(state)
 
@@ -130,6 +135,7 @@ const getMonitorData = () => {
       state.threadCount = []
       state.threadDaemonCount = []
       state.heap = []
+      state.reqCounter = []
       for(var i = 0;i<response.data.length;i++) {
           var obj = response.data[i];
           state.youngGC.push(obj.youngGC)
@@ -141,15 +147,57 @@ const getMonitorData = () => {
           state.threadCount.push(obj.threadCount)
           state.threadDaemonCount.push(obj.threadDaemonCount)
           state.heap.push(obj.usedHeap)
+          state.reqCounter.push(obj.reqCounter)
       }
 
       setGcChartsOptions();
       setCPUChartsOptions();
       setThreadChartsOptions();
       setHeapChartsOptions();
+      setReqCounterChartsOptions();
   }).catch(e => {
       ElMessage.error(e.message)
   });
+}
+const setReqCounterChartsOptions = () => {
+    if(state.charts.reqCounterCharts == null) {
+      var div = document.getElementById('reqCounterCharts');
+      state.charts.reqCounterCharts = markRaw(echarts.init(div))
+  }
+  state.charts.reqCounterCharts.setOption({
+      title: {
+          text: '请求次数',
+          top: '0',
+          x: 'center',
+      },
+      
+      tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+              type: 'shadow'
+          }
+      },
+      calculable: true,
+      xAxis: [
+          {
+              type: 'category',
+              // prettier-ignore
+              data: state.times
+          }
+      ],
+      yAxis: [
+          {
+              type: 'value',
+          },
+      ],
+      series: [
+          {
+              data: state.reqCounter,
+              type: 'line',
+              name: '请求次数',
+          }
+      ]
+  }, true)
 }
 
 const setThreadChartsOptions = () => {
