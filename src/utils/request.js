@@ -84,14 +84,14 @@ service.interceptors.response.use(
       return res.data
     } else {
       if (code === 999) {
-        ElMessageBox.confirm('请重新登录', {
-          confirmButtonText: '登录失效',
-          type: 'warning'
-        }).then(() => {
-          const userStore = useUserStore()
-          userStore.resetState().then(() => {
-            router.push({ path: '/login' })
-          })
+        ElMessageBox.alert('登录失效, 请重新登录', '提示', {
+          confirmButtonText: 'OK',
+          callback: (action) => {
+            const userStore = useUserStore()
+            userStore.resetState().then(() => {
+              router.push({ path: '/login' })
+            })
+          },
         })
       }
       //返回错误信息
@@ -113,9 +113,7 @@ service.interceptors.response.use(
     //如果是跨域
     //Network Error,cross origin
     const errObj = {
-      message: err.toString(),
-      reqUrl: reqConfig.baseURL + reqConfig.url,
-      params: reqConfig.params ? reqConfig.params : reqConfig.data
+      message: err.toString()
     }
     return Promise.reject(errObj)
   }
