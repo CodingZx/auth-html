@@ -56,16 +56,16 @@
               <el-button circle :icon="Opportunity" @click="handleDetail(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="下载" placement="top">
-              <el-button circle type="info" :icon="Download" v-permission="['report:log:download']" @click="handleDownload(scope.row.id)" />
+              <el-button circle type="info" :icon="Download" v-permission="['exception:log:download']" @click="handleDownload(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="处理" v-if="scope.row.status == 0"  placement="top">
-              <el-button circle type="success" :icon="Check" v-permission="['report:log:status']" @click="handleProcess(scope.row.id)" />
+              <el-button circle type="success" :icon="Check" v-permission="['exception:log:status']" @click="handleProcess(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="忽略"  v-if="scope.row.status == 0"  placement="top">
-              <el-button circle type="info" :icon="Close" v-permission="['report:log:status']" @click="handleIgnore(scope.row.id)" />
+              <el-button circle type="info" :icon="Close" v-permission="['exception:log:status']" @click="handleIgnore(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['report:log:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button type="danger" v-permission="['exception:log:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -112,7 +112,7 @@
 import Pagination from '@/components/Pagination/index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Plus, Search, Key, Check, Close, Opportunity, Download } from '@element-plus/icons-vue'
-import { getReportList, findReportDetail, setReportStatus, deleteReport, downloadReport } from '@/api/report-err'
+import { getReportList, findReportDetail, setReportStatus, deleteReport, downloadReport } from '@/api/exception-log'
 import { nextTick } from 'process'
 
 const dataTable = ref(null)

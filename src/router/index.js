@@ -73,10 +73,10 @@ export const asyncRoutes = [
     meta: { title: '日志列表'}
   },
   {
-    path: '/report/log/list',
-    name: 'reportErrLog',
-    component: () => import('@/views/report-err/list.vue'),
-    meta: { title: '上报列表'}
+    path: '/exception/log/list',
+    name: 'exceptionLog',
+    component: () => import('@/views/exception-log/list.vue'),
+    meta: { title: '异常列表'}
   },
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
