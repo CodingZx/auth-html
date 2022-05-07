@@ -48,8 +48,10 @@ service.interceptors.request.use(
     }
     var body = ""
     if (request.data && (request.method == "post" || request.method == "put")) {
-        body = JSON.stringify(request.data);
-        request.data = body;
+        body = JSON.stringify(request.data)
+        request.data = body
+    }else {
+        request.data = null
     }
 
     // 随机字符串

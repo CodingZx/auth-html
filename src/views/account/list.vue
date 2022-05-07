@@ -16,7 +16,7 @@
           </el-form-item>
         </el-form>
 
-        <el-form :inline="true" v-permission="['auth:admin:delete', 'auth:admin:add']" >
+        <el-form v-permission="['auth:admin:delete', 'auth:admin:add']" :inline="true" >
           <el-form-item label="">
             <el-button v-permission="['auth:admin:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
                 新增
@@ -57,13 +57,13 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-tooltip content="重置密码" placement="top">
-            <el-button type="info" v-permission="['auth:admin:reset']" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
+            <el-button v-permission="['auth:admin:reset']" type="info" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
-            <el-button type="info" v-permission="['auth:admin:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
+            <el-button v-permission="['auth:admin:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['auth:admin:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['auth:admin:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -76,7 +76,7 @@
         <el-form-item label="用户名:" >
           <el-input v-model="temp.userName" autocomplete="off" maxlength="20" show-word-limit />
         </el-form-item>
-        <el-form-item v-if="dialogStatus == 'create'" label="密码:">
+        <el-form-item v-if="showPwd" label="密码:">
             <el-input v-model="temp.password" autocomplete="off" show-password />
         </el-form-item>
         <el-form-item label="真实姓名:" >
@@ -147,12 +147,12 @@ const state = reactive({
   dialogResetFormVisible: false,
   reset: {},
 
-
+  showPwd: false,
   roles: [],
 })
 
 //导出属性到页面中使用
-const { list, listLoading, listQuery, listQueryCopy, count, dialogFormVisible, temp, roles, dialogTitle, reset, dialogResetFormVisible } = toRefs(state)
+const { list, listLoading, listQuery, listQueryCopy, count, dialogFormVisible, temp, roles, dialogTitle, reset, dialogResetFormVisible, showPwd } = toRefs(state)
 
 onBeforeMount(() => {
   fetchData()
@@ -189,6 +189,7 @@ const handleCreate = () => {
       roleId: "",
     }
     state.dialogTitle = '新增'
+    state.showPwd = true
 
     state.dialogFormVisible = true
   }).catch((e) => {
@@ -208,6 +209,7 @@ const handleUpdate = (row) => {
       roleId: row.roleId,
     }
     state.dialogTitle = '编辑'
+    state.showPwd = false
 
     state.dialogFormVisible = true
   }).catch((e) => {
