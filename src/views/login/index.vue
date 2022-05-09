@@ -6,7 +6,7 @@
         <h3 class="title text-center">Vue3 Admin</h3>
       </div>
       <el-form-item prop="userName" :rules="formRules.isNotNull">
-        <div class="rowSC">
+        <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
@@ -195,6 +195,13 @@ $light_gray: #eee;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+  }
+  .el-input__wrapper {
+    background-color: transparent;
+    box-shadow: none !important;
+    .is-focus {
+      box-shadow: none !important;
+    }
   }
   .el-input input {
     background: transparent;
