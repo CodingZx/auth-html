@@ -56,16 +56,16 @@
               <el-button circle :icon="Opportunity" @click="handleDetail(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="下载" placement="top">
-              <el-button circle type="info" :icon="Download" v-permission="['exception:log:download']" @click="handleDownload(scope.row.id)" />
+              <el-button v-permission="['exception:log:download']" circle type="info" :icon="Download" @click="handleDownload(scope.row.id)" />
           </el-tooltip>
-          <el-tooltip content="处理" v-if="scope.row.status == 0"  placement="top">
-              <el-button circle type="success" :icon="Check" v-permission="['exception:log:status']" @click="handleProcess(scope.row.id)" />
+          <el-tooltip v-if="scope.row.status == 0" content="处理"  placement="top">
+              <el-button v-permission="['exception:log:status']" circle type="success" :icon="Check" @click="handleProcess(scope.row.id)" />
           </el-tooltip>
-          <el-tooltip content="忽略"  v-if="scope.row.status == 0"  placement="top">
-              <el-button circle type="info" :icon="Close" v-permission="['exception:log:status']" @click="handleIgnore(scope.row.id)" />
+          <el-tooltip v-if="scope.row.status == 0"  content="忽略"  placement="top">
+              <el-button v-permission="['exception:log:status']" circle type="info" :icon="Close" @click="handleIgnore(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['exception:log:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['exception:log:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -73,7 +73,7 @@
 
     <Pagination v-model:page='listQuery.page' v-model:limit='listQuery.size' :total='count' @pagination='fetchData' />
 
-    <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" title="dialogTitle" width="60%">
+    <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" title="详细信息" width="60%">
       <el-form :model="temp" label-width="100px" class="interfaceForm">
         <el-row>
             <el-col :span="12">
@@ -128,7 +128,6 @@ const state = reactive({
     status: "-99",
   },
   dialogFormVisible: false,
-  dialogTitle: "",
   temp: {},
 })
 

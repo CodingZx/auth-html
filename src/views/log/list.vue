@@ -24,7 +24,7 @@
           </el-form-item>
         </el-form>
 
-        <el-form :inline="true" v-permission="['auth:role:delete', 'auth:role:clear']" >
+        <el-form v-permission="['auth:role:delete', 'auth:role:clear']" :inline="true" >
           <el-form-item label="">
             
             <el-button v-permission="['auth:log:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
@@ -75,7 +75,7 @@
             <el-button type="info"  :icon="Document" circle @click="handleDetail(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['auth:log:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['auth:log:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>

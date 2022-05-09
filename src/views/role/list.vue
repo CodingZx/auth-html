@@ -13,7 +13,7 @@
           </el-form-item>
         </el-form>
 
-        <el-form :inline="true" v-permission="['auth:role:delete', 'auth:role:add']" >
+        <el-form v-permission="['auth:role:delete', 'auth:role:add']" :inline="true" >
           <el-form-item label="">
             <el-button v-permission="['auth:role:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
                 新增
@@ -42,10 +42,10 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-tooltip content="编辑" placement="top">
-            <el-button type="info" v-permission="['auth:role:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
+            <el-button v-permission="['auth:role:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['auth:role:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['auth:role:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -62,8 +62,8 @@
         <el-form-item label="权限列表:">
             <div class="down-tree">
                 <el-tree
-                    :data="menus"
                     ref="menuTree"
+                    :data="menus"
                     show-checkbox
                     default-expand-all
                     highlight-current

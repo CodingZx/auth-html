@@ -1,7 +1,7 @@
 <template>
   <div class="app-container scroll-y">
      <div class="filter-container" >
-        <el-form :inline="true" v-permission="['auth:menu:delete', 'auth:menu:add']" >
+        <el-form v-permission="['auth:menu:delete', 'auth:menu:add']" :inline="true" >
           <el-form-item label="">
             <el-button v-permission="['auth:menu:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
                 新增
@@ -56,13 +56,13 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-tooltip content="新增" placement="top">
-            <el-button type="primary" v-permission="['auth:menu:add']" :icon="Plus" circle @click="handleCreateSub(scope.row)" />
+            <el-button v-permission="['auth:menu:add']" type="primary" :icon="Plus" circle @click="handleCreateSub(scope.row)" />
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
-            <el-button type="info" v-permission="['auth:menu:edit']" :icon="Edit" circle @click="handleUpdate(scope.row)" />
+            <el-button v-permission="['auth:menu:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" v-permission="['auth:menu:delete']" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['auth:menu:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -70,16 +70,16 @@
 
     <el-dialog v-model="dialogFormVisible" :close-on-click-modal="false" :title="dialogTitle" width="40%">
       <el-form :model="temp" label-width="80px" class="interfaceForm">
-        <el-form-item label="上级目录:" v-if="parentName != ''">
+        <el-form-item v-if="parentName != ''" label="上级目录:">
             <el-input v-model="parentName" disabled autocomplete="off" />
         </el-form-item>
         <el-form-item label="名称:" >
           <el-input v-model="temp.title" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="图标:"  v-if="temp.menuType != 'button'">
+        <el-form-item v-if="temp.menuType != 'button'"  label="图标:">
           <el-input v-model="temp.icon" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="路径:" v-if="temp.menuType == 'menu'">
+        <el-form-item v-if="temp.menuType == 'menu'" label="路径:">
           <el-input v-model="temp.path" autocomplete="off" />
         </el-form-item>
         <el-form-item label="类型:" >
@@ -89,7 +89,7 @@
               <el-option v-if="temp.menuType == 'button'" label="按钮" value="button"> </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限:" v-if="temp.menuType != 'dir'">
+        <el-form-item v-if="temp.menuType != 'dir'" label="权限:">
           <el-input v-model="temp.resourceCode" autocomplete="off" />
         </el-form-item>
         <el-form-item label="排序值:" >
