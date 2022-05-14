@@ -14,7 +14,6 @@
     </div>
 
     <el-table ref="dataTable" v-loading="listLoading" :data="list" element-loading-text="加载中" border highlight-current-row :height="tableHeight">
-      <el-table-column type="selection" width="55" />
       <el-table-column label="缩略信息" width="250" align="center">
         <template #default="scope">
 
@@ -116,7 +115,7 @@ import { getReportList, findReportDetail, setReportStatus, deleteReport, downloa
 import { nextTick } from 'process'
 
 const dataTable = ref(null)
-const tableHeight = ref(`calc(100vh - 70px - 40px - 20px - 100px)`)
+const tableHeight = ref('calc(100vh - 70px - 40px - 20px - 100px)')
 
 const state = reactive({
   list: [],

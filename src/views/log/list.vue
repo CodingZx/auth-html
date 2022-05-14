@@ -26,7 +26,6 @@
 
         <el-form v-permission="['auth:role:delete', 'auth:role:clear']" :inline="true" >
           <el-form-item label="">
-            
             <el-button v-permission="['auth:log:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
                 删除
             </el-button>
@@ -38,7 +37,7 @@
       </div>
 
     <el-table ref="dataTable" v-loading="listLoading" :data="list" element-loading-text="加载中" border highlight-current-row :height="tableHeight">
-      <el-table-column type="selection" width="55" />
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="操作"  align="center">
         <template #default="scope">
           {{ scope.row.title }}
@@ -125,10 +124,16 @@
 import Pagination from '@/components/Pagination/index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Plus, Search, Document } from '@element-plus/icons-vue'
+import { checkPermissions } from '@/utils/auth'
 import { getLogList, deleteLog, clearLog, findLogDetail } from '@/api/log'
 
 const dataTable = ref(null)
-const tableHeight = ref(`calc(100vh - 70px - 40px - 50px - 20px - 100px)`)
+
+var tableHeightCalc = ''
+if(checkPermissions(['auth:role:delete', 'auth:role:clear'])) {
+  tableHeightCalc += ' - 50px'
+}
+const tableHeight = ref('calc(100vh - 70px - 40px - 20px - 100px' + tableHeightCalc +')')
 
 const state = reactive({
   list: [],

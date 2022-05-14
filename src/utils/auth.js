@@ -27,3 +27,19 @@ export function getPermissions() {
 export function removePermissions() {
   return localStorage.removeItem(PermissionKey)
 }
+
+
+export function checkPermissions(permissions) {
+  var nowPermissions = getPermissions()
+  if(permissions instanceof Array) {
+    for(var i=0;i<permissions.length;i++) {
+      var result = nowPermissions.includes(permissions[i])
+      if(result) return true
+    }
+    return false
+  }
+  if(permissions instanceof String) {
+    return nowPermissions.includes(permissions)
+  }
+  return false
+}

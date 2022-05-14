@@ -29,7 +29,7 @@
       </div>
 
     <el-table ref="dataTable" v-loading="listLoading" :data="list" element-loading-text="加载中" border highlight-current-row :height="tableHeight">
-      <el-table-column type="selection" width="55" />
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="账号" width="200" align="center">
         <template #default="scope">
           {{ scope.row.userName }}
@@ -120,12 +120,18 @@
 import Pagination from '@/components/Pagination/index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Plus, Search, Key } from '@element-plus/icons-vue'
+import { checkPermissions } from '@/utils/auth'
 import { getAccountList, saveAccount, deleteAccount, resetPwd } from '@/api/account'
 import { getAllRole } from '@/api/role'
 import { nextTick } from 'process'
 
 const dataTable = ref(null)
-const tableHeight = ref(`calc(100vh - 70px - 40px - 50px - 20px - 100px)`)
+
+var tableHeightCalc = ''
+if(checkPermissions(['auth:admin:delete', 'auth:admin:add'])) {
+  tableHeightCalc += ' - 50px'
+}
+const tableHeight = ref('calc(100vh - 70px - 40px - 20px - 100px '+ tableHeightCalc +')')
 
 const state = reactive({
   list: [],

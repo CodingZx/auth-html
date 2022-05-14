@@ -14,7 +14,7 @@
       </div>
 
     <el-table ref="dataTable" v-loading="listLoading" :tree-props="{ children: 'children' }" row-key="id" default-expand-all :data="list" element-loading-text="加载中" border highlight-current-row :height="tableHeight">
-      <el-table-column type="selection" width="55" />
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="名称"  align="center">
         <template #default="scope">
           {{ scope.row.title }}
@@ -109,11 +109,17 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Delete, Edit, Plus, Search } from '@element-plus/icons-vue'
+import { checkPermissions } from '@/utils/auth'
 import { getMenuList, saveMenu, deleteMenu } from '@/api/menu'
 import * as ElSvg from '@element-plus/icons-vue';
 
 const dataTable = ref(null)
-const tableHeight = ref(`calc(100vh - 70px - 40px - 50px )`)
+
+var tableHeightCalc = ''
+if(checkPermissions(['auth:admin:delete', 'auth:admin:add'])) {
+  tableHeightCalc += ' - 50px'
+}
+const tableHeight = ref('calc(100vh - 70px - 40px '+tableHeightCalc+')')
 
 const state = reactive({
   list: [],
