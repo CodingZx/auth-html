@@ -96,24 +96,27 @@ const state = reactive({
 let { loading, env, servers, monitorParams } = toRefs(state)
 
 onBeforeMount(() => {
-  getSystemEnv().then((response) => {
-    state.env = response.data
-  }).catch((e) => {
-    ElMessage.error(e.message)
-  }) 
-  getSystemServers().then(response => {
-      state.servers = response.data
-      state.monitorParams.minutes = 60
+    state.loading = true
+    getSystemEnv().then((response) => {
+        state.env = response.data
+        state.loading = false
+    }).catch((e) => {
+        ElMessage.error(e.message)
+        state.loading = false
+    }) 
+    getSystemServers().then(response => {
+        state.servers = response.data
+        state.monitorParams.minutes = 60
 
-      if(state.servers.length > 0) {
-          state.monitorParams.server = state.servers[0];
-      }
-      if(state.monitorParams.server != '') {
-          getMonitorData();
-      }
-  }).catch(e => {
-      ElMessage.error(e.message)
-  });
+        if(state.servers.length > 0) {
+            state.monitorParams.server = state.servers[0];
+        }
+        if(state.monitorParams.server != '') {
+            getMonitorData();
+        }
+    }).catch(e => {
+        ElMessage.error(e.message)
+    });
 })
 
 const getMonitorData = () => {
