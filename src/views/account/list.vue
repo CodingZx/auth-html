@@ -47,6 +47,13 @@
           {{ scope.row.roleName }}
         </template>
       </el-table-column>
+
+      <el-table-column label="状态" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.status" type="success">启用</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
+        </template>
+      </el-table-column>
       
       <el-table-column label="创建时间" align="center">
         <template #default="scope">
@@ -56,6 +63,12 @@
 
       <el-table-column label="操作" align="center">
         <template #default="scope">
+          <el-tooltip content="禁用" placement="top">
+            <el-button v-if="scope.row.status" v-permission="['auth:admin:status']" type="danger" :icon="Close" circle @click="handleUpdateStatus(scope.row.id, false)" />
+          </el-tooltip>
+          <el-tooltip content="启用" placement="top">
+            <el-button v-if="!scope.row.status" v-permission="['auth:admin:status']" type="success" :icon="Select" circle @click="handleUpdateStatus(scope.row.id, true)" />
+          </el-tooltip>
           <el-tooltip content="重置密码" placement="top">
             <el-button v-permission="['auth:admin:reset']" type="info" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
           </el-tooltip>
@@ -119,9 +132,9 @@
 <script setup>
 import Pagination from '@/components/Pagination/index.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete, Edit, Plus, Search, Key } from '@element-plus/icons-vue'
+import { Delete, Edit, Plus, Search, Key, Close, Select } from '@element-plus/icons-vue'
 import { checkPermissions } from '@/utils/auth'
-import { getAccountList, saveAccount, deleteAccount, resetPwd } from '@/api/account'
+import { getAccountList, saveAccount, deleteAccount, resetPwd, updateStatus } from '@/api/account'
 import { getAllRole } from '@/api/role'
 import { nextTick } from 'process'
 
@@ -311,6 +324,32 @@ const handleReset = () => {
   }).catch((e) => {
     ElMessage.error(e.message)
   }) 
+}
+
+
+const handleUpdateStatus = (id, status) => {
+  ElMessageBox.confirm(
+    status ? '确定要启用吗?' : '确定要禁用吗?',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'danger',
+    }
+  ).then(() => {
+    updateStatus(id, status).then((response) => {
+      ElMessage({
+        message: '操作成功',
+        type: 'success',
+      })
+
+      fetchData()
+    }).catch((e) => {
+      ElMessage.error(e.message)
+    }) 
+  }).catch(() => {
+    console.log("cancel")
+  })
 }
 
 

@@ -25,6 +25,14 @@ export function deleteAccount(id) {
 }
 
 
+export function updateStatus(userId, status) {
+  return request({
+    url: '/admin/update/'+userId+'/'+status,
+    method: 'put',
+  })
+}
+
+
 export function resetPwd(data) {
   return request({
     url: '/admin/reset/pwd',
