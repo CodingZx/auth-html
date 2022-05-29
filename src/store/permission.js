@@ -17,6 +17,7 @@ export function filterAsyncRoutes(asyncRoutes, menus) {
               title: dirResp.title,
               elSvgIcon: dirResp.icon
           },
+          alwaysShow: true,
       }
       var children = []
       // 子项
