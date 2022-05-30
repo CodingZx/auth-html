@@ -63,10 +63,10 @@
 
       <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-tooltip content="禁用" placement="top">
+          <el-tooltip v-if="scope.row.status" content="禁用" placement="top">
             <el-button v-if="scope.row.status" v-permission="['auth:admin:status']" type="danger" :icon="Close" circle @click="handleUpdateStatus(scope.row.id, false)" />
           </el-tooltip>
-          <el-tooltip content="启用" placement="top">
+          <el-tooltip v-if="!scope.row.status" content="启用" placement="top">
             <el-button v-if="!scope.row.status" v-permission="['auth:admin:status']" type="success" :icon="Select" circle @click="handleUpdateStatus(scope.row.id, true)" />
           </el-tooltip>
           <el-tooltip content="重置密码" placement="top">

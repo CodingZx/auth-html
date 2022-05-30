@@ -55,8 +55,8 @@
 
       <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-tooltip content="新增" placement="top">
-            <el-button v-permission="['auth:menu:add']" type="primary" :icon="Plus" circle @click="handleCreateSub(scope.row)" />
+          <el-tooltip v-if="scope.row.menuType != 'button'"  content="新增" placement="top">
+            <el-button v-if="scope.row.menuType != 'button'" v-permission="['auth:menu:add']" type="primary" :icon="Plus" circle @click="handleCreateSub(scope.row)" />
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button v-permission="['auth:menu:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
