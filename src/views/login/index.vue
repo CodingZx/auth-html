@@ -110,7 +110,7 @@ let loginReq = () => {
       router.push({ path: state.redirect || '/', query: state.otherQuery })
     })
     .catch((res) => {
-      tipMessage.value = res.msg
+      tipMessage.value = res.message
       useCommon()
         .sleep(30)
         .then(() => {

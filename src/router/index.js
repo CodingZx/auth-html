@@ -78,6 +78,12 @@ export const asyncRoutes = [
     component: () => import('@/views/exception-log/list.vue'),
     meta: { title: '异常列表'}
   },
+  {
+    path: '/ip/limit/list',
+    name: 'ipLimitList',
+    component: () => import('@/views/ip-limit/list.vue'),
+    meta: { title: 'IP限制'}
+  },
   // 404 page must be placed at the end !!!
   // using pathMatch install of "*" in vue-router 4.0
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
