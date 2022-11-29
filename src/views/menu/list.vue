@@ -116,7 +116,7 @@ import * as ElSvg from '@element-plus/icons-vue';
 const dataTable = ref(null)
 
 var tableHeightCalc = ''
-if(checkPermissions(['auth:admin:delete', 'auth:admin:add'])) {
+if(checkPermissions(['auth:menu:delete', 'auth:menu:add'])) {
   tableHeightCalc += ' - 50px'
 }
 const tableHeight = ref('calc(100vh - 70px - 40px '+tableHeightCalc+')')

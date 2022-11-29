@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAccountList(params) {
   return request({
-    url: '/admin/list',
+    url: '/account/list',
     method: 'get',
     params: params
   })
@@ -10,7 +10,7 @@ export function getAccountList(params) {
 
 export function saveAccount(data) {
   return request({
-    url: '/admin/save',
+    url: '/account/save',
     method: 'post',
     data: data
   })
@@ -19,7 +19,7 @@ export function saveAccount(data) {
 
 export function deleteAccount(id) {
   return request({
-    url: '/admin/'+ id,
+    url: '/account/'+ id,
     method: 'delete'
   })
 }
@@ -27,7 +27,7 @@ export function deleteAccount(id) {
 
 export function updateStatus(userId, status) {
   return request({
-    url: '/admin/update/'+userId+'/'+status,
+    url: '/account/update/'+userId+'/'+status,
     method: 'put',
   })
 }
@@ -35,7 +35,7 @@ export function updateStatus(userId, status) {
 
 export function resetPwd(data) {
   return request({
-    url: '/admin/reset/pwd',
+    url: '/account/reset/pwd',
     method: 'put',
     data: data
   })

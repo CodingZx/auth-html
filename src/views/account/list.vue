@@ -16,12 +16,12 @@
           </el-form-item>
         </el-form>
 
-        <el-form v-permission="['auth:admin:delete', 'auth:admin:add']" :inline="true" >
+        <el-form v-permission="['auth:account:delete', 'auth:account:add']" :inline="true" >
           <el-form-item label="">
-            <el-button v-permission="['auth:admin:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
+            <el-button v-permission="['auth:account:add']" class="filter-item" type="primary" :icon="Plus" @click="handleCreate">
                 新增
             </el-button>
-            <el-button v-permission="['auth:admin:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
+            <el-button v-permission="['auth:account:delete']" class="filter-item" type="danger" :icon="Delete" @click="handleDeleteSelected">
                 删除
             </el-button>
           </el-form-item>
@@ -64,19 +64,19 @@
       <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-tooltip v-if="scope.row.status" content="禁用" placement="top">
-            <el-button v-if="scope.row.status" v-permission="['auth:admin:status']" type="danger" :icon="Close" circle @click="handleUpdateStatus(scope.row.id, false)" />
+            <el-button v-if="scope.row.status" v-permission="['auth:account:status']" type="danger" :icon="Close" circle @click="handleUpdateStatus(scope.row.id, false)" />
           </el-tooltip>
           <el-tooltip v-if="!scope.row.status" content="启用" placement="top">
-            <el-button v-if="!scope.row.status" v-permission="['auth:admin:status']" type="success" :icon="Select" circle @click="handleUpdateStatus(scope.row.id, true)" />
+            <el-button v-if="!scope.row.status" v-permission="['auth:account:status']" type="success" :icon="Select" circle @click="handleUpdateStatus(scope.row.id, true)" />
           </el-tooltip>
           <el-tooltip content="重置密码" placement="top">
-            <el-button v-permission="['auth:admin:reset']" type="info" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
+            <el-button v-permission="['auth:account:reset']" type="info" :icon="Key" circle @click="handleToResetPwd(scope.row.id)" />
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
-            <el-button v-permission="['auth:admin:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
+            <el-button v-permission="['auth:account:edit']" type="info" :icon="Edit" circle @click="handleUpdate(scope.row)" />
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button v-permission="['auth:admin:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
+            <el-button v-permission="['auth:account:delete']" type="danger" :icon="Delete" circle @click="handleDeleteRow(scope.row.id)" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -141,7 +141,7 @@ import { nextTick } from 'process'
 const dataTable = ref(null)
 
 var tableHeightCalc = ''
-if(checkPermissions(['auth:admin:delete', 'auth:admin:add'])) {
+if(checkPermissions(['auth:account:delete', 'auth:account:add'])) {
   tableHeightCalc += ' - 50px'
 }
 const tableHeight = ref('calc(100vh - 70px - 40px - 20px - 100px '+ tableHeightCalc +')')

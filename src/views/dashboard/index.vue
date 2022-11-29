@@ -40,19 +40,20 @@
   </el-row>
   
   <el-row style="margin-top: 30px">
-      <el-col :span="24">
-          <div id="gcCharts" style="height: 500px; width: 100%" />
+      <el-col :span="12">
+          <div id="gcCharts" style="height: 300px; width: 100%" />
       </el-col>
-      <el-col :span="24">
+      
+      <el-col :span="12">
+          <div id="reqCounterCharts" style="height: 300px; width: 100%" />
+      </el-col>
+      <el-col :span="8">
           <div id="heapCharts" style="height: 500px; width: 100%" />
       </el-col>
-      <el-col :span="24">
-          <div id="reqCounterCharts" style="height: 500px; width: 100%" />
-      </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
           <div id="cpuCharts" style="height: 500px; width: 100%" />
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
           <div id="threadCharts" style="height: 500px; width: 100%" />
       </el-col>
   </el-row>

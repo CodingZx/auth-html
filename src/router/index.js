@@ -49,8 +49,8 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/auth/admin/list',
-    name: 'authAdmin',
+    path: '/auth/account/list',
+    name: 'authAccount',
     component: () => import('@/views/account/list.vue'),
     meta: { title: '账号列表'}
   },
