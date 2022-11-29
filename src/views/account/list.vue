@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="姓名" align="center">
+      <el-table-column label="姓名" align="center" width="200">
         <template #default="scope">
           <span>{{ scope.row.realName }}</span>
         </template>
@@ -48,14 +48,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="状态" align="center">
+      <el-table-column label="状态" align="center" width="200">
         <template #default="scope">
           <el-tag v-if="scope.row.status" type="success">启用</el-tag>
           <el-tag v-else type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="创建时间" align="center" width="240">
         <template #default="scope">
           {{ scope.row.createTime }}
         </template>

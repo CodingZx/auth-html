@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function getKey() {
+  return request({
+    url: '/key',
+    method: 'get'
+  })
+}
+
 export function loginReq(data) {
   return request({
     url: '/login',
